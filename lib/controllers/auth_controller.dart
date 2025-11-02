@@ -8,12 +8,12 @@ import 'package:project_fullstack/config/app_config.dart';
 class AuthController {
   final String usersBase = '${AppConfig.apiBase}/users';
 
-  Future<String?> login(String identifier, String password) async {
+  Future<String?> login(String username, String password) async {
     try {
       final response = await http.post(
         Uri.parse('$usersBase/login'),
         headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"identifier": identifier, "password": password}),
+        body: jsonEncode({"username": username, "password": password}),
       );
 
       if (response.statusCode == 200) {

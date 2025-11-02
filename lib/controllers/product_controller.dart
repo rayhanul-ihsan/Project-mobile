@@ -80,19 +80,36 @@ class ProductController {
     String orderBy = 'created_at',
     int page = 1,
     int size = 10,
+    String search = '',
+    List<String> searchBy = const [],
   }) async {
-    final url = Uri.parse(
-      '${AppConfig.apiBase}/products/getAll?order=$order&orderBy=$orderBy&page=$page&size=$size',
+    final url = Uri.parse('${AppConfig.apiBase}/products/getAll');
+
+    // kirim parameter melalui body
+    final body = jsonEncode({
+      "search": search,
+      "search_by": searchBy,
+      "operator": "and",
+      "orderBy": orderBy,
+      "order": order,
+      "page": page,
+      "size": size,
+    });
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: body,
     );
 
-    final response = await http.get(url);
-
     if (response.statusCode == 200) {
-      final Map<String, dynamic> body = jsonDecode(response.body);
-      final List<dynamic> data = body['data'];
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      final List<dynamic> data = json['data'];
       return data.map((e) => ProductModel.fromJson(e)).toList();
     } else {
-      throw Exception('Gagal memuat produk (${response.statusCode})');
+      throw Exception(
+        'Gagal memuat produk (${response.statusCode}): ${response.body}',
+      );
     }
   }
 }
