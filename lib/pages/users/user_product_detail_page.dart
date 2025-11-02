@@ -34,7 +34,7 @@ class ProductDetailPage extends StatelessWidget {
       locale: 'id_ID',
       symbol: 'Rp',
       decimalDigits: 0,
-    ).format(product.harga);
+    ).format(product.price);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
@@ -42,7 +42,7 @@ class ProductDetailPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0.5,
         title: Text(
-          product.nama,
+          product.name,
           style: const TextStyle(
             color: Colors.black,
             fontFamily: "Inter",
@@ -62,9 +62,9 @@ class ProductDetailPage extends StatelessWidget {
             ProductCarousel(imageUrl: imageUrl),
 
             ProductDetailInfo(
-              name: product.nama,
+              name: product.name,
               rating: product.rating.toStringAsFixed(1),
-              soldCount: '${product.stokPengurangan}',
+              soldCount: '${product.stokMenipis}',
               // category: product.kategori,
               // status: product.status,
             ),
@@ -74,9 +74,9 @@ class ProductDetailPage extends StatelessWidget {
             const SizedBox(height: 8),
 
             ProductDescription(
-              description: product.deskripsi.isNotEmpty
-                  ? product.deskripsi
-                  : 'Tidak ada deskripsi produk.',
+              description: product.description.isNotEmpty
+                  ? product.description
+                  : 'Tidak ada description produk.',
             ),
           ],
         ),

@@ -61,8 +61,8 @@ class _AdminProductListPageState extends State<AdminProductListPage> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredProducts = products.where((p) {
-        final nameMatch = p.nama.toLowerCase().contains(query);
-        final kategoriMatch = p.kategori.toLowerCase().contains(query);
+        final nameMatch = p.name.toLowerCase().contains(query);
+        final kategoriMatch = p.category.toLowerCase().contains(query);
         return nameMatch || kategoriMatch;
       }).toList();
     });
@@ -71,11 +71,11 @@ class _AdminProductListPageState extends State<AdminProductListPage> {
   void _onFilterChange(String filter) {
     setState(() {
       selectedFilter = filter == 'Nama Produk'
-          ? 'nama'
+          ? 'name'
           : filter == 'Harga Produk'
-          ? 'harga'
+          ? 'price'
           : filter == 'Kategori'
-          ? 'kategori'
+          ? 'category'
           : 'status';
     });
     _loadProducts();

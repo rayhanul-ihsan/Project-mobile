@@ -1,27 +1,29 @@
+import 'dart:ffi';
+
 class ProductModel {
   final String id;
   final String image;
-  final String nama;
-  final String kategori;
-  final int stokAwal;
-  final int stokPengurangan;
+  final String name;
+  final String category;
+  final int stok;
+  final int stokMenipis;
   final int stokPenambahan;
-  final double harga;
-  final String status;
-  final String deskripsi;
+  final double price;
+  final bool status;
+  final String description;
   final double rating;
 
   ProductModel({
     required this.id,
     required this.image,
-    required this.nama,
-    required this.kategori,
-    required this.stokAwal,
-    required this.stokPengurangan,
+    required this.name,
+    required this.category,
+    required this.stok,
+    required this.stokMenipis,
     required this.stokPenambahan,
-    required this.harga,
+    required this.price,
     required this.status,
-    required this.deskripsi,
+    required this.description,
     this.rating = 0.0,
   });
 
@@ -29,14 +31,14 @@ class ProductModel {
     return ProductModel(
       id: json['_id'] ?? '',
       image: json['image'] ?? '',
-      nama: json['nama'] ?? '',
-      kategori: json['kategori'] ?? '',
-      stokAwal: (json['stokAwal'] ?? 0).toInt(),
-      stokPengurangan: (json['stokPengurangan'] ?? 0).toInt(),
+      name: json['name'] ?? '',
+      category: json['category'] ?? '',
+      stok: (json['stok'] ?? 0).toInt(),
+      stokMenipis: (json['stokMenipis'] ?? 0).toInt(),
       stokPenambahan: (json['stokPenambahan'] ?? 0).toInt(),
-      harga: (json['harga'] ?? 0).toDouble(),
-      status: json['status'] ?? '',
-      deskripsi: json['deskripsi'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      status: json['status'] == true, // pastikan jadi boolean
+      description: json['description'] ?? '',
       rating: (json['rating'] ?? 0).toDouble(),
     );
   }

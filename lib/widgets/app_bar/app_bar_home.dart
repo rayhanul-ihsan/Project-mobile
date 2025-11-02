@@ -11,14 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String name;
   final String subtitle;
-  final String imageUrl;
+  final String image;
   final VoidCallback? onAvatarTap;
 
   const CustomAppBar({
     super.key,
     required this.name,
     this.subtitle = 'Jelajah produk terkait dari kami',
-    required this.imageUrl,
+    required this.image,
     this.onAvatarTap,
   });
 
@@ -39,7 +39,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   void initState() {
     super.initState();
     _displayName = widget.name;
-    _photoPath = widget.imageUrl;
+    _photoPath = widget.image;
     _loadUserFromPrefs();
   }
 
@@ -71,12 +71,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
         _loggedIn = true;
         _displayName = parsed?['username'] ?? parsed?['name'] ?? widget.name;
         _photoPath =
-            parsed?['photo_profile'] ?? parsed?['photo'] ?? widget.imageUrl;
+            parsed?['image'] ?? parsed?['photo'] ?? widget.image;
       });
     }
   }
 
-  String _resolveImageUrl(String? imagePath) {
+  String _resolveimage(String? imagePath) {
     if (imagePath == null || imagePath.isEmpty) return '';
     if (imagePath.startsWith('http')) return imagePath;
     final apiBase = AppConfig.apiBase.replaceAll(RegExp(r'/$'), '');
@@ -114,7 +114,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     final displayName = _displayName ?? widget.name;
     final subtitle = widget.subtitle;
     final resolvedImage = _photoPath != null && _photoPath!.isNotEmpty
-        ? _resolveImageUrl(_photoPath)
+        ? _resolveimage(_photoPath)
         : null;
 
     return SafeArea(

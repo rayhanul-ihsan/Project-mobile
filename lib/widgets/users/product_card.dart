@@ -54,7 +54,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.nama,
+                    product.name,
                     style: const TextStyle(
                       color: Color(0xFF050506),
                       fontSize: 14,
@@ -73,7 +73,7 @@ class ProductCard extends StatelessWidget {
                           locale: 'id_ID',
                           symbol: 'Rp',
                           decimalDigits: 0,
-                        ).format(product.harga),
+                        ).format(product.price),
                         style: const TextStyle(
                           color: Color(0xFFFF7900),
                           fontSize: 12,
@@ -108,7 +108,7 @@ class ProductCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '${product.stokPengurangan} Terjual',
+                        '${product.stokMenipis} Terjual',
                         style: const TextStyle(
                           color: Color(0xFF5B5C63),
                           fontSize: 12,

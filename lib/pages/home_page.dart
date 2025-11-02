@@ -18,7 +18,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         name: 'Selamat Datang',
-        imageUrl: 'https://placehold.co/40x40/E6E6FA/000000?text=S',
+        image: 'https://placehold.co/40x40/E6E6FA/000000?text=S',
         onAvatarTap: () {
           print('Avatar diketuk!');
         },

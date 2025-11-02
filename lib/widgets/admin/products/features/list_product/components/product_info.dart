@@ -14,7 +14,7 @@ class ProductInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          product.nama,
+          product.name,
           style: const TextStyle(
             color: Color(0xFF050506),
             fontSize: 14,
@@ -29,7 +29,7 @@ class ProductInfo extends StatelessWidget {
             locale: 'id_ID',
             symbol: 'Rp',
             decimalDigits: 0,
-          ).format(product.harga),
+          ).format(product.price),
           style: const TextStyle(
             color: Color(0xFF050506),
             fontSize: 14,
@@ -49,7 +49,7 @@ class ProductInfo extends StatelessWidget {
             ),
           ),
           child: Text(
-            product.kategori,
+            product.category,
             style: const TextStyle(
               color: Color(0xFF050506),
               fontSize: 12,
@@ -73,7 +73,7 @@ class ProductInfo extends StatelessWidget {
               ),
             ),
             Text(
-              '${product.stokAwal}',
+              '${product.stok}',
               style: const TextStyle(
                 color: Color(0xFF050506),
                 fontSize: 12,
@@ -92,7 +92,7 @@ class ProductInfo extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  product.status,
+                  product.status == true ? 'Aktif' : 'Non-Aktif',
                   style: const TextStyle(
                     color: Color(0xFFE6871A),
                     fontSize: 12,
