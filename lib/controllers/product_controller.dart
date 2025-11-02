@@ -3,22 +3,29 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:project_fullstack/config/app_config.dart';
 import 'package:project_fullstack/models/product_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:project_fullstack/services/http_service.dart';
 
 class ProductController {
   Future<String?> uploadImage(File image) async {
-    final url = Uri.parse('${AppConfig.apiBase}/upload-image');
-    var request = http.MultipartRequest('POST', url);
-    request.files.add(await http.MultipartFile.fromPath('file', image.path));
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      final respStr = await response.stream.bytesToString();
-      final data = jsonDecode(respStr);
-      if (data['image'] is String) {
-        return data['image'];
+    try {
+      final url = Uri.parse('${AppConfig.apiBase}/upload-image');
+      final request = await HttpService.multipartRequest('POST', url);
+
+      request.files.add(await http.MultipartFile.fromPath('file', image.path));
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final respStr = await response.stream.bytesToString();
+        final data = jsonDecode(respStr);
+        if (data['image'] is String) {
+          return data['image'];
+        }
       }
+      return null;
+    } catch (e) {
+      print('Upload image error: $e');
+      return null;
     }
-    return null;
   }
 
   Future<http.Response> submitProduct({
@@ -43,25 +50,13 @@ class ProductController {
       "deskripsi": deskripsi,
     };
 
-    return await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(body),
-    );
+    return await HttpService.post(url, body: body);
   }
 
   Future<bool> deleteProduct(String productId) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('access_token');
       final url = Uri.parse('${AppConfig.apiBase}/products/delete/$productId');
-
-      final headers = <String, String>{
-        "Content-Type": "application/json",
-        if (token != null && token.isNotEmpty) "Authorization": "Bearer $token",
-      };
-
-      final response = await http.delete(url, headers: headers);
+      final response = await HttpService.delete(url);
 
       if (response.statusCode == 200 || response.statusCode == 204) {
         return true;
@@ -83,33 +78,32 @@ class ProductController {
     String search = '',
     List<String> searchBy = const [],
   }) async {
-    final url = Uri.parse('${AppConfig.apiBase}/products/getAll');
+    try {
+      final url = Uri.parse('${AppConfig.apiBase}/products/getAll');
+      final body = {
+        "search": search,
+        "search_by": searchBy,
+        "operator": "and",
+        "orderBy": orderBy,
+        "order": order,
+        "page": page,
+        "size": size,
+      };
 
-    // kirim parameter melalui body
-    final body = jsonEncode({
-      "search": search,
-      "search_by": searchBy,
-      "operator": "and",
-      "orderBy": orderBy,
-      "order": order,
-      "page": page,
-      "size": size,
-    });
+      final response = await HttpService.post(url, body: body);
 
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: body,
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> json = jsonDecode(response.body);
-      final List<dynamic> data = json['data'];
-      return data.map((e) => ProductModel.fromJson(e)).toList();
-    } else {
-      throw Exception(
-        'Gagal memuat produk (${response.statusCode}): ${response.body}',
-      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> json = jsonDecode(response.body);
+        final List<dynamic> data = json['data'];
+        return data.map((e) => ProductModel.fromJson(e)).toList();
+      } else {
+        throw Exception(
+          'Gagal memuat produk (${response.statusCode}): ${response.body}',
+        );
+      }
+    } catch (e) {
+      print('Get products error: $e');
+      rethrow;
     }
   }
 }
